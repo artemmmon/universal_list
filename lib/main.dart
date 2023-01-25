@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:universal_list/domain/list_controller.dart';
 import 'package:universal_list/presentation/list_widget.dart';
 
+import 'data/data_source.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: Provider(
-        create: (_) => ListController(),
+        create: (_) => ListController(dataSource: DataSourceMock()),
         child: ListWidget(),
       ),
     );
