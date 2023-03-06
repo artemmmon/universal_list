@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/list_cubit.dart';
 import '../data/data_source.dart';
-import '../domain/list_controller.dart';
 import 'list_widget.dart';
 
 class ListPage extends StatelessWidget {
@@ -12,8 +12,8 @@ class ListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-            create: (_) => ListController(dataSource: dataSource)..fetch(),
+    return BlocProvider<ListCubit>(
+            create: (_) => ListCubit(dataSource: dataSource)..fetch(),
             child: const ListWidget(),
           );
   }

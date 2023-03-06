@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:universal_list/domain/list_controller.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universal_list/bloc/list_view_state.dart';
+import '../bloc/list_cubit.dart';
 import 'decoration_widget.dart';
 import 'grid_view_item.dart';
 import 'item_widget.dart';
@@ -11,9 +11,7 @@ class ListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ListController>(builder: (context, controller, _) {
-      final state = controller.value;
-
+    return BlocBuilder<ListCubit, ListViewState>(builder: (context, state) {
       final Widget content;
 
       if (state is ListLoadedState) {
@@ -50,7 +48,8 @@ class ListWidget extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               IconButton(
-                onPressed: controller.fetch,
+                onPressed:
+                    BlocProvider.of<ListCubit>(context, listen: false).fetch,
                 icon: const Icon(
                   Icons.file_download,
                 ),
@@ -66,7 +65,8 @@ class ListWidget extends StatelessWidget {
             if (state is ListLoadedState)
               Switch(
                 value: state.listViewMode,
-                onChanged: controller.changeViewMode,
+                onChanged: BlocProvider.of<ListCubit>(context, listen: false)
+                    .changeViewMode,
               ),
           ],
           backgroundColor: Colors.green.shade900,
