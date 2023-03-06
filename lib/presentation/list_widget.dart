@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_list/domain/list_controller.dart';
-import 'package:universal_list/domain/list_view_state.dart';
+import 'package:universal_list/bloc/list_view_state.dart';
 import 'decoration_widget.dart';
 import 'grid_view_item.dart';
 import 'item_widget.dart';
