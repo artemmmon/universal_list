@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'cartoons_dto.g.dart';
@@ -16,4 +18,9 @@ class CartoonsDTO {
 
   factory CartoonsDTO.fromJson(Map<String, dynamic> json) =>
       _$CartoonsDTOFromJson(json);
+  Map<String, dynamic> toJson() => _$CartoonsDTOToJson(this);
+
+  void test() {
+final json = jsonEncode(this.toJson());
+  }
 }

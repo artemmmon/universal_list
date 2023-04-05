@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:universal_list/data/data_source.dart';
 import 'package:universal_list/presentation/list_page.dart';
 
+import '../data/apis/custom/custom_data_source.dart';
+import 'data_saver_page.dart';
 import 'decoration_widget.dart';
 
 class DataSourcesPage extends StatelessWidget {
@@ -15,6 +17,19 @@ class DataSourcesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade900,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DataSaverPage(dataSaver: CustomDataSource(),),
+                ),
+              );
+            },
+            icon: const Icon(Icons.add),
+            color: Colors.amber,
+          ),
+        ],
         title: const Text(
           'Home page',
           style: TextStyle(

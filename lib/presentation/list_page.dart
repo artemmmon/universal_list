@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/list_cubit.dart';
 import '../data/data_source.dart';
+import '../domain/bloc/list_cubit.dart';
 import 'list_widget.dart';
 
 class ListPage extends StatelessWidget {

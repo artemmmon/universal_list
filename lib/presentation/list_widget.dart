@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universal_list/bloc/list_view_state.dart';
-import '../bloc/list_cubit.dart';
+import '../domain/bloc/list_cubit.dart';
+import '../domain/bloc/list_view_state.dart';
 import 'decoration_widget.dart';
 import 'grid_view_item.dart';
 import 'item_widget.dart';
@@ -19,7 +19,20 @@ class ListWidget extends StatelessWidget {
           content = ListView.builder(
               itemCount: state.listData.length,
               itemBuilder: (context, index) {
-                return ItemWidget(model: state.listData[index]);
+                final cubit = context.read<ListCubit>();
+                final isLiked = cubit.getIsLiked(state.listData[index]);
+                final model = state.listData[index];
+                return ItemWidget(
+                  model: model,
+                  isLiked: isLiked,
+                  onLongPress: () {
+                    if (isLiked) {
+                      cubit.unLike(model);
+                    } else {
+                      cubit.like(model);
+                    }
+                  },
+                );
               });
         } else {
           content = GridView.builder(
@@ -30,9 +43,22 @@ class ListWidget extends StatelessWidget {
               ),
               itemCount: state.listData.length,
               itemBuilder: (context, index) {
+                final cubit = context.read<ListCubit>();
+                final isLiked = cubit.getIsLiked(state.listData[index]);
+                final model = state.listData[index];
                 return Padding(
                   padding: const EdgeInsets.only(top: 10, left: 7, right: 7),
-                  child: GridViewItem(model: state.listData[index]),
+                  child: GridViewItem(
+                    model: model,
+                    isLiked: isLiked,
+                    onDoubleTab: () {
+                      if (isLiked) {
+                        cubit.unLike(model);
+                      } else {
+                        cubit.like(model);
+                      }
+                    },
+                  ),
                 );
               });
         }

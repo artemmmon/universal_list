@@ -1,20 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universal_list/data/item_model.dart';
 import 'package:universal_list/presentation/element_list_widget.dart';
 
+import '../domain/bloc/like_cubit.dart';
+
+
 class ItemWidget extends StatelessWidget {
-  const ItemWidget({super.key, required this.model});
+  const ItemWidget({
+    super.key,
+    required this.model,
+    required this.isLiked,
+    required this.onLongPress,
+  });
 
   final ItemModel model;
+  final bool isLiked;
+  final VoidCallback onLongPress;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onLongPress: onLongPress,
+      trailing: isLiked
+          ? const Text(
+              '❤️',
+              style: TextStyle(fontSize: 32),
+            )
+          : null,
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ElementListWidget(
-              dataModel: model,
+            builder: (context) => BlocProvider<LikeCubit>(
+                        create: (_) => LikeCubit(model),
+              child: ElementListWidget(
+                dataModel: model,
+              ),
             ),
           ),
         );
