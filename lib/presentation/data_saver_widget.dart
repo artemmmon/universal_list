@@ -1,17 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universal_list/domain/bloc/data_saver_cubit.dart';
 import 'package:universal_list/presentation/decoration_widget.dart';
 
 class DataSaverWidget extends StatefulWidget {
-  DataSaverWidget({super.key});
+  const DataSaverWidget({super.key});
 
   @override
   State<DataSaverWidget> createState() => _DataSaverWidgetState();
 }
 
 class _DataSaverWidgetState extends State<DataSaverWidget> {
+
+ final formKey = GlobalKey<FormState>();
+ final scaffoldKey = GlobalKey<ScaffoldState>();
+
   final _titleController = TextEditingController();
 
   final _descriptionController = TextEditingController();
@@ -26,50 +30,102 @@ class _DataSaverWidgetState extends State<DataSaverWidget> {
     super.dispose();
   }
 
-  Widget _buildTextField(TextEditingController controller, String labelText) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: labelText,
-        suffixIcon: Icon(
-          Icons.delete_outline,
-          color: Colors.red,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.0),
+  Widget _buildTextField(
+    TextEditingController controller,
+    String labelText,
+    int textInputFormatter,
+      int maxLines,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: TextFormField(
+          controller: controller,
+          decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: const TextStyle(color: Colors.amberAccent),
+            suffixIcon: IconButton(
+              onPressed: () {
+                controller.clear();
+              },
+              icon: const Icon(
+                Icons.delete_outline,
+                color: Colors.red,
+              ),
+            ),
+            enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.0),
+              ),
+              borderSide: BorderSide(color: Colors.black),
+            ),
+            focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.0),
+              ),
+              borderSide: BorderSide(color: Colors.amberAccent, width: 2.0),
+            ),
           ),
-          borderSide: BorderSide(color: Colors.black),
+          validator: (val) => val!.isEmpty ? 'Please fill in all fields' : null,
+          maxLines: maxLines,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(textInputFormatter),
+          ],
+          cursorColor: Colors.white,
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.0),
-          ),
-          borderSide: BorderSide(color: Colors.white, width: 2.0),
-        ),
-      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Colors.green.shade900,
+        title: const Text(
+          'Home page',
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.amber,
+            fontFamily: 'Lobster',
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: DecorationWidget(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 60,
-            ),
-            _buildTextField(_titleController, 'Enter title'),
-            const SizedBox(
-              height: 20,
-            ),
-            _buildTextField(_descriptionController, 'Enter description'),
-            const SizedBox(
-              height: 20,
-            ),
-            _buildTextField(_imageController, 'Enter the path to the image'),
-          ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 60,
+              ),
+              _buildTextField(
+                _titleController,
+                'Enter title',
+                20,
+                1,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              _buildTextField(
+                _descriptionController,
+                'Enter description',
+                70,
+                3,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              _buildTextField(
+                _imageController,
+                'Enter the path to the image',
+                1000,
+                1,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: Padding(
@@ -77,11 +133,15 @@ class _DataSaverWidgetState extends State<DataSaverWidget> {
         child: FloatingActionButton(
           backgroundColor: Colors.grey,
           onPressed: () {
-            BlocProvider.of<DataSaverCubit>(context, listen: false).save(
-                title: _titleController.text,
-                description: _descriptionController.text,
-                image: _imageController.text);
-            Navigator.of(context).pop();
+            if (formKey.currentState!.validate()) {
+              BlocProvider.of<DataSaverCubit>(context, listen: false).save(
+                              title: _titleController.text,
+                              description: _descriptionController.text,
+                              image: _imageController.text);
+                          Navigator.of(context).pop();
+            }
+            else {
+            }
           },
           child: const Icon(
             Icons.save_alt,
