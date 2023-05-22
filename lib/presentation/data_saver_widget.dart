@@ -13,8 +13,8 @@ class DataSaverWidget extends StatefulWidget {
 
 class _DataSaverWidgetState extends State<DataSaverWidget> {
 
- final formKey = GlobalKey<FormState>();
- final scaffoldKey = GlobalKey<ScaffoldState>();
+  final formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _titleController = TextEditingController();
 
@@ -34,44 +34,44 @@ class _DataSaverWidgetState extends State<DataSaverWidget> {
     TextEditingController controller,
     String labelText,
     int textInputFormatter,
-      int maxLines,
+    int maxLines,
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: TextFormField(
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: labelText,
-            labelStyle: const TextStyle(color: Colors.amberAccent),
-            suffixIcon: IconButton(
-              onPressed: () {
-                controller.clear();
-              },
-              icon: const Icon(
-                Icons.delete_outline,
-                color: Colors.red,
-              ),
-            ),
-            enabledBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(20.0),
-              ),
-              borderSide: BorderSide(color: Colors.black),
-            ),
-            focusedBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(20.0),
-              ),
-              borderSide: BorderSide(color: Colors.amberAccent, width: 2.0),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: const TextStyle(color: Colors.amberAccent),
+          suffixIcon: IconButton(
+            onPressed: () {
+              controller.clear();
+            },
+            icon: const Icon(
+              Icons.delete_outline,
+              color: Colors.red,
             ),
           ),
-          validator: (val) => val!.isEmpty ? 'Please fill in all fields' : null,
-          maxLines: maxLines,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(textInputFormatter),
-          ],
-          cursorColor: Colors.white,
+          enabledBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20.0),
+            ),
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20.0),
+            ),
+            borderSide: BorderSide(color: Colors.amberAccent, width: 2.0),
+          ),
         ),
+        validator: (val) => val!.isEmpty ? 'Please fill in all fields' : null,
+        maxLines: maxLines,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(textInputFormatter),
+        ],
+        cursorColor: Colors.white,
+      ),
     );
   }
 
@@ -135,12 +135,12 @@ class _DataSaverWidgetState extends State<DataSaverWidget> {
           onPressed: () {
             if (formKey.currentState!.validate()) {
               BlocProvider.of<DataSaverCubit>(context, listen: false).save(
-                              title: _titleController.text,
-                              description: _descriptionController.text,
-                              image: _imageController.text);
-                          Navigator.of(context).pop();
-            }
-            else {
+                  title: _titleController.text,
+                  description: _descriptionController.text,
+                  image: _imageController.text);
+              Navigator.of(context).pop();
+            } else {
+              // snackBar();
             }
           },
           child: const Icon(
@@ -151,4 +151,21 @@ class _DataSaverWidgetState extends State<DataSaverWidget> {
       ),
     );
   }
+
+  // void snackBar() {
+  //   scaffoldKey.currentState!.showSnackBar(
+  //       const SnackBar(
+  //      duration: Duration(seconds: 3),
+  //      backgroundColor: Colors.red,
+  //      content: Text(
+  //        'Please fill in all fields',
+  //        style: TextStyle(
+  //          fontSize: 20,
+  //          fontWeight: FontWeight.w800,
+  //          color: Colors.black,
+  //        ),
+  //      ),
+  //    ),
+  //   );
+  // }
 }
