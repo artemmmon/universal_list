@@ -63,9 +63,13 @@ class ElementListWidget extends StatelessWidget {
                 children: [
                   Container(
                     margin: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
+                      horizontal: 15,
+                      vertical: 10,
+                    ),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
+                      horizontal: 15,
+                      vertical: 10,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.black87.withOpacity(0.6),

@@ -25,6 +25,8 @@ class ListWidget extends StatelessWidget {
                 return ItemWidget(
                   model: model,
                   isLiked: isLiked,
+                  canRemove: cubit.canHandleData,
+                  onRemovePressed: () => cubit.removeItem(model),
                   onLongPress: () {
                     if (isLiked) {
                       cubit.unLike(model);

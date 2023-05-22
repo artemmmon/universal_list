@@ -9,8 +9,9 @@ import 'package:universal_list/presentation/data_sources_page.dart';
 import 'data/apis/simpsons/simpsons_data_source.dart';
 
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
   await LikeService.instance().initialize();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

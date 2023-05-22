@@ -22,7 +22,7 @@ class DataSourcesPage extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => DataSaverPage(dataSaver: CustomDataSource(),),
+                  builder: (context) => DataSaverPage(dataHandler: CustomDataSource(),),
                 ),
               );
             },

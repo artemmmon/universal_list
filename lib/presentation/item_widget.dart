@@ -5,34 +5,42 @@ import 'package:universal_list/presentation/element_list_widget.dart';
 
 import '../domain/bloc/like_cubit.dart';
 
-
 class ItemWidget extends StatelessWidget {
   const ItemWidget({
     super.key,
     required this.model,
     required this.isLiked,
     required this.onLongPress,
+    this.canRemove = false,
+    this.onRemovePressed,
   });
 
   final ItemModel model;
   final bool isLiked;
+  final bool canRemove;
+  final VoidCallback? onRemovePressed;
   final VoidCallback onLongPress;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onLongPress: onLongPress,
-      trailing: isLiked
-          ? const Text(
-              '❤️',
-              style: TextStyle(fontSize: 32),
-            )
-          : null,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (isLiked) const Text('❤️', style: TextStyle(fontSize: 32)),
+          if (canRemove)
+            IconButton(
+              onPressed: () => onRemovePressed?.call(),
+              icon: const Icon(Icons.close),
+            ),
+        ],
+      ),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => BlocProvider<LikeCubit>(
-                        create: (_) => LikeCubit(model),
+              create: (_) => LikeCubit(model),
               child: ElementListWidget(
                 dataModel: model,
               ),

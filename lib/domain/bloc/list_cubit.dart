@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universal_list/data/data_handler.dart';
 import '../../data/data_source.dart';
 import '../../data/item_model.dart';
 import '../../data/services/like_service.dart';
@@ -13,6 +14,8 @@ class ListCubit extends Cubit<ListViewState> {
   }
 
   final DataSource _dataSource;
+
+  bool get canHandleData => _dataSource is DataHandler;
 
   @override
   Future<void> close() {
@@ -66,6 +69,13 @@ class ListCubit extends Cubit<ListViewState> {
       return state.likedData.contains(model);
     }
     return false;
+  }
+
+  Future removeItem(ItemModel model) async {
+    if (canHandleData) {
+      await (_dataSource as DataHandler).removeData(model);
+      fetch();
+    }
   }
 
   void _onLikedItemsChange() {
